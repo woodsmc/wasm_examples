@@ -14,8 +14,14 @@
 #define GLOBAL_HEAP_BUFFER_SIZE (512*1024)
 #define ERROR_BUFFER_SIZE (128)
 
+#define MODULE_NAME "host"
 
-bool invoke_add(wasm_module_inst_t module_instance, wasm_exec_env_t exec_env, int a, int b, int* answer) {
+void addanswer(wasm_exec_env_t exec_env,  int result) {
+	printf("Hey! - I got the result [%d]\n", result);
+}
+
+
+bool invoke_add(wasm_module_inst_t module_instance, wasm_exec_env_t exec_env, int a, int b) {
 	const char* WASM_FUNCTION = "add";
 	printf("look up a function [%s]\n", WASM_FUNCTION);
 	wasm_function_inst_t func = wasm_runtime_lookup_function(module_instance, WASM_FUNCTION);
@@ -31,20 +37,16 @@ bool invoke_add(wasm_module_inst_t module_instance, wasm_exec_env_t exec_env, in
 		,.of.i32 = b}
 	};
 
-	wasm_val_t result[] = {
-		{.kind = WASM_I32
-		,.of.i32 = 0}		
-	};
+
 
 	printf(">calling function with parameters(%p)\n", parameters[0].of.ref);
-	bool executed_ok = wasm_runtime_call_wasm_a(exec_env, func, 1, &result[0], 2, &parameters[0]);
+	bool executed_ok = wasm_runtime_call_wasm_a(exec_env, func, 0, NULL, 2, &parameters[0]);
 	if (!executed_ok) {
 		printf("call failed!\n");
 		return false;
 	}
 
-	(*answer) = result[0].of.i32;
-
+	
 	return true;	
 }
 
@@ -53,6 +55,15 @@ bool invoke_add(wasm_module_inst_t module_instance, wasm_exec_env_t exec_env, in
 
 int main(void) {
 	printf("Starting\n");
+
+	static NativeSymbol native_symbols[] = {
+		{ "addanswer",
+		addanswer,
+		"(i)",
+		NULL } 
+	};
+	const int numberOfFunctions = sizeof(native_symbols) / sizeof(NativeSymbol);
+
 	// structures
 	wasm_module_t module = NULL;
 	wasm_module_inst_t module_inst = NULL;
@@ -72,9 +83,9 @@ int main(void) {
 	args.mem_alloc_type = Alloc_With_Pool;
 	args.mem_alloc_option.pool.heap_buf = global_heap_buffer;
 	args.mem_alloc_option.pool.heap_size = GLOBAL_HEAP_BUFFER_SIZE;	
-	args.native_module_name = "host";
-	args.n_native_symbols = 0;
-	args.native_symbols = NULL;
+	args.native_module_name = MODULE_NAME;
+	args.n_native_symbols = numberOfFunctions;
+	args.native_symbols = &native_symbols[0];
 
 
 	// buffer space
@@ -125,12 +136,11 @@ int main(void) {
 
 
 	printf("calling add function %p\n", exec_env);
-	int answer = 0;
-	bool function_ok = invoke_add(module_inst, exec_env, 40, 2, &answer);
+	bool function_ok = invoke_add(module_inst, exec_env, 40, 2);
 	if ( !function_ok) {
 		printf("there was an error invoking the function\n");
 	} else {
-		printf("add(40, 2) -> %d\n", answer);
+		printf("We should have an answer\n");
 	}
 	
 
