@@ -1,7 +1,5 @@
 #include <stdio.h>
 
-//typedef void (*TFunctionPtr)(void);
-
 void function_a(void) {
     printf("I'm function %s with address %p\n", __func__, &function_a);
 }
