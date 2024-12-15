@@ -1,4 +1,4 @@
-#include "wasm_linking_controls.h"
+#include "wasm_linking.h"
 
 static __externref_t reference[0];
 static int table_size = 0;
