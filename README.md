@@ -1,4 +1,4 @@
 # Wasm Examples
 An repository of examples to follow withbighair's blog
 * Exporting functions from Wasm and calling them from a host
-* Importing a function from the host environment and calling them from Wasm
+* Importing a functions from the host environment and calling them from Wasm
