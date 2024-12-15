@@ -4,19 +4,19 @@
 #include "bh_platform.h"
 #include <stdint.h>
 #include <string.h>
+#include <stdbool.h>
 #include "bh_read_file.h"
 
 
 
-#define WASM_FILE "../../wasm/b.wasm"
+#define WASM_FILE "../../wasm/add.wasm"
 
 #define GLOBAL_HEAP_BUFFER_SIZE (512*1024)
 #define ERROR_BUFFER_SIZE (128)
 
-typedef void (*TFunctionPtr)(void);
 
-TFunctionPtr invoke_get_ref(wasm_module_inst_t module_instance, wasm_exec_env_t exec_env) {
-	const char* WASM_FUNCTION = "get_ref";
+bool invoke_add(wasm_module_inst_t module_instance, wasm_exec_env_t exec_env, int a, int b, int* answer) {
+	const char* WASM_FUNCTION = "add";
 	printf("look up a function [%s]\n", WASM_FUNCTION);
 	wasm_function_inst_t func = wasm_runtime_lookup_function(module_instance, WASM_FUNCTION);
 	if (!func) {
@@ -25,48 +25,30 @@ TFunctionPtr invoke_get_ref(wasm_module_inst_t module_instance, wasm_exec_env_t 
 	}
 	printf(">function found!\n");	
 	wasm_val_t parameters[] = {
-		{.kind = WASM_EXTERNREF
-		,.of.ref = NULL}
+		{.kind = WASM_I32
+		,.of.i32 = a},
+		{.kind = WASM_I32
+		,.of.i32 = b}
+	};
+
+	wasm_val_t result[] = {
+		{.kind = WASM_I32
+		,.of.i32 = 0}		
 	};
 
 	printf(">calling function with parameters(%p)\n", parameters[0].of.ref);
-	bool executed_ok = wasm_runtime_call_wasm_a(exec_env, func, 1, &parameters[0], 0, NULL);
+	bool executed_ok = wasm_runtime_call_wasm_a(exec_env, func, 1, &result[0], 2, &parameters[0]);
 	if (!executed_ok) {
 		printf("call failed!\n");
-		return NULL;
+		return false;
 	}
-	
-	return (TFunctionPtr) parameters[0].of.ref;
-}
 
-void invoke_set_ref(wasm_module_inst_t module_instance, wasm_exec_env_t exec_env, void* ptr) {
-	const char* WASM_FUNCTION = "set_ref";
-	printf("look up a function [%s]\n", WASM_FUNCTION);
-	wasm_function_inst_t func = wasm_runtime_lookup_function(module_instance, WASM_FUNCTION);
-	if (!func) {
-		printf("couldn't find function [%s]\n", WASM_FUNCTION);
-		return;
-	}
-	printf(">function found!\n");	
-	wasm_val_t parameters[] = {
-		{.kind = WASM_EXTERNREF
-		,.of.ref = ptr}
-	};
+	(*answer) = result[0].of.i32;
 
-	printf(">calling function with parameters(%p)\n", parameters[0].of.ref);
-	bool executed_ok = wasm_runtime_call_wasm_a(exec_env, func, 0, NULL, 1, &parameters[0]);
-	if (!executed_ok) {
-		printf("call failed!\n");
-		return;
-	}	
+	return true;	
 }
 
 
-
-
-void function_a(void) {
-	printf("This is %s \n", __func__);
-}
 
 
 int main(void) {
@@ -140,13 +122,17 @@ int main(void) {
 	printf(">execution environment created\n");
 
 	// The good stuff is here.... 
-	TFunctionPtr ptr = function_a;
 
-	printf("set %p\n", exec_env);
-	invoke_set_ref(module_inst, exec_env, ptr);
-	TFunctionPtr ptrBack = invoke_get_ref(module_inst, exec_env);
-	printf("got %p\n", ptrBack);
-	ptrBack();
+
+	printf("calling add function %p\n", exec_env);
+	int answer = 0;
+	bool function_ok = invoke_add(module_inst, exec_env, 40, 2, &answer);
+	if ( !function_ok) {
+		printf("there was an error invoking the function\n");
+	} else {
+		printf("add(40, 2) -> %d\n", answer);
+	}
+	
 
 
 	// the good stop stops here.... 

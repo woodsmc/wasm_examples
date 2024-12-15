@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.14)
 include(CheckPIESupported)
 include(CMakePrintHelpers)
 
-project(CallBackExample VERSION 1.0.0 DESCRIPTION "A WAMR host environment will a call back")
+project(AddExample VERSION 1.0.0 DESCRIPTION "A WAMR host environment will a call back")
 
 #if(POLICY CMP0079)
 #    cmake_policy(SET CMP0079 NEW)
@@ -37,15 +37,15 @@ set(sources ${sources}
 
 cmake_print_variables(sources)
 
-add_executable(callbackexample ${sources} )
-target_include_directories(callbackexample PRIVATE ../h)
-target_include_directories(callbackexample PRIVATE ${WAMR_ROOT_DIR}/core/iwasm/include)
+add_executable(${PROJECT_NAME} ${sources} )
+target_include_directories(${PROJECT_NAME} PRIVATE ../h)
+target_include_directories(${PROJECT_NAME} PRIVATE ${WAMR_ROOT_DIR}/core/iwasm/include)
 
 
 check_pie_supported()
-set_target_properties(callbackexample PROPERTIES POSITION_INDPENDENT_CODE ON)
+set_target_properties(${PROJECT_NAME} PROPERTIES POSITION_INDPENDENT_CODE ON)
 
-target_link_libraries (callbackexample vmlib -lm -dl -lpthread -lrt)
-# target_link_libraries(callbackexample m)
+target_link_libraries (${PROJECT_NAME} vmlib -lm -dl -lpthread -lrt)
+
 
 
