@@ -17,12 +17,22 @@ START_DESCRIBE_STRUCT(example_data_structure)
     DESCRIBE_FIELD(example_data_structure, byteArray)
 END_DESCRIBE_STRUCT;
 
+START_DESCRIBE_STRUCT(example_data_structure_padded_pointer)
+    DESCRIBE_FIELD(example_data_structure_padded_pointer, eight),
+    DESCRIBE_FIELD(example_data_structure_padded_pointer, sixteen),
+    DESCRIBE_FIELD(example_data_structure_padded_pointer, thirtytwo),
+    DESCRIBE_FIELD(example_data_structure_padded_pointer, eightAgain),
+    DESCRIBE_FIELD(example_data_structure_padded_pointer, pointer),
+    DESCRIBE_FIELD(example_data_structure_padded_pointer, byteArray)
+END_DESCRIBE_STRUCT;
+
 
 
 int main(int argc, const char* argv[]) {
     printf("A small example to show structure packing across platforms\n");
     showStructure(&TFieldDescriptor_meta);
     showStructure(&example_data_structure_meta);
+    showStructure(&example_data_structure_padded_pointer_meta);
     return 0;
 }
 
