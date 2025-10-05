@@ -8,13 +8,12 @@ START_DESCRIBE_STRUCT(TFieldDescriptor)
     DESCRIBE_FIELD(TFieldDescriptor, size)
 END_DESCRIBE_STRUCT;
 
-START_DESCRIBE_STRUCT(example_data_structure)
-    DESCRIBE_FIELD(example_data_structure, eight),
-    DESCRIBE_FIELD(example_data_structure, sixteen),
-    DESCRIBE_FIELD(example_data_structure, thirtytwo),
-    DESCRIBE_FIELD(example_data_structure, eightAgain),
-    DESCRIBE_FIELD(example_data_structure, pointer),
-    DESCRIBE_FIELD(example_data_structure, byteArray)
+START_DESCRIBE_STRUCT(TAllDataTypes)
+    DESCRIBE_FIELD(TAllDataTypes, eight),
+    DESCRIBE_FIELD(TAllDataTypes, sixteen),
+    DESCRIBE_FIELD(TAllDataTypes, thirtytwo),
+    DESCRIBE_FIELD(TAllDataTypes, eightAgain),
+    DESCRIBE_FIELD(TAllDataTypes, pointer)
 END_DESCRIBE_STRUCT;
 
 START_DESCRIBE_STRUCT(example_data_structure_padded_pointer)
@@ -36,6 +35,15 @@ END_DESCRIBE_STRUCT;
 START_DESCRIBE_STRUCT(T8and64BitataTypes)
     DESCRIBE_FIELD(T8and64BitataTypes, eight),
     DESCRIBE_FIELD(T8and64BitataTypes, sixtyfour)
+END_DESCRIBE_STRUCT;
+
+START_DESCRIBE_STRUCT(T8and32BitataTypes)
+    DESCRIBE_FIELD(T8and32BitataTypes, eight),
+    DESCRIBE_FIELD(T8and32BitataTypes, thirtytwo)
+END_DESCRIBE_STRUCT;
+
+START_DESCRIBE_STRUCT(TOnly8bitataType)
+    DESCRIBE_FIELD(TOnly8bitataType, eight)
 END_DESCRIBE_STRUCT;
 
 #if defined(__x86_64__) || defined(_M_X64)
@@ -77,7 +85,10 @@ int main(int argc, const char* argv[]) {
     showStructure(&example_data_structure_meta);
     showStructure(&example_data_structure_padded_pointer_meta);*/
     //showStructure(&TBasicDataTypes_meta);
-    showStructure(&T8and64BitataTypes_meta);
+    //showStructure(&T8and64BitataTypes_meta);
+    //showStructure(&T8and32BitataTypes_meta);
+    //showStructure(&TOnly8bitataType_meta);
+    showStructure(&TAllDataTypes_meta);
     return 0;
 }
 
