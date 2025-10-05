@@ -16,6 +16,14 @@ START_DESCRIBE_STRUCT(TAllDataTypes)
     DESCRIBE_FIELD(TAllDataTypes, pointer)
 END_DESCRIBE_STRUCT;
 
+START_DESCRIBE_STRUCT(TAllDataTypesWithUnion)
+    DESCRIBE_FIELD(TAllDataTypesWithUnion, eight),
+    DESCRIBE_FIELD(TAllDataTypesWithUnion, sixteen),
+    DESCRIBE_FIELD(TAllDataTypesWithUnion, thirtytwo),
+    DESCRIBE_FIELD(TAllDataTypesWithUnion, eightAgain),
+    DESCRIBE_FIELD(TAllDataTypesWithUnion, pointer)
+END_DESCRIBE_STRUCT;
+
 START_DESCRIBE_STRUCT(example_data_structure_padded_pointer)
     DESCRIBE_FIELD(example_data_structure_padded_pointer, eight),
     DESCRIBE_FIELD(example_data_structure_padded_pointer, sixteen),
@@ -88,7 +96,8 @@ int main(int argc, const char* argv[]) {
     //showStructure(&T8and64BitataTypes_meta);
     //showStructure(&T8and32BitataTypes_meta);
     //showStructure(&TOnly8bitataType_meta);
-    showStructure(&TAllDataTypes_meta);
+    //showStructure(&TAllDataTypes_meta);
+    showStructure(&TAllDataTypesWithUnion_meta);
     return 0;
 }
 
