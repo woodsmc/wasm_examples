@@ -56,10 +56,23 @@ END_DESCRIBE_STRUCT;
     #define ARCH_STRING "unknown"
 #endif
 
+// ---------- Compiler detection ----------
+#if defined(__clang__)
+    #define COMPILER_STRING "Clang"
+#elif defined(__GNUC__)
+    #define COMPILER_STRING "GCC"
+#elif defined(_MSC_VER)
+    #define COMPILER_STRING "MSVC"
+#elif defined(__EMSCRIPTEN__)
+    #define COMPILER_STRING "Emscripten"
+#else
+    #define COMPILER_STRING "Unknown Compiler"
+#endif
 
 int main(int argc, const char* argv[]) {
     printf("A small example to show structure packing across platforms\n");
     printf("Platform: %s\n", ARCH_STRING);
+    printf("Compiler: %s\n", COMPILER_STRING);
     /*showStructure(&TFieldDescriptor_meta);
     showStructure(&example_data_structure_meta);
     showStructure(&example_data_structure_padded_pointer_meta);*/
