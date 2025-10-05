@@ -26,13 +26,45 @@ START_DESCRIBE_STRUCT(example_data_structure_padded_pointer)
     DESCRIBE_FIELD(example_data_structure_padded_pointer, byteArray)
 END_DESCRIBE_STRUCT;
 
+START_DESCRIBE_STRUCT(TBasicDataTypes)
+    DESCRIBE_FIELD(TBasicDataTypes, eight),
+    DESCRIBE_FIELD(TBasicDataTypes, sixteen),
+    DESCRIBE_FIELD(TBasicDataTypes, thirtytwo),
+    DESCRIBE_FIELD(TBasicDataTypes, sixtyfour)
+END_DESCRIBE_STRUCT;
+
+START_DESCRIBE_STRUCT(T8and64BitataTypes)
+    DESCRIBE_FIELD(T8and64BitataTypes, eight),
+    DESCRIBE_FIELD(T8and64BitataTypes, sixtyfour)
+END_DESCRIBE_STRUCT;
+
+#if defined(__x86_64__) || defined(_M_X64)
+    #define ARCH_STRING "x86_64"
+#elif defined(__i386__) || defined(_M_IX86)
+    #define ARCH_STRING "x86"
+#elif defined(__aarch64__) || defined(_M_ARM64)
+    #define ARCH_STRING "arm64"
+#elif defined(__arm__) || defined(_M_ARM)
+    #define ARCH_STRING "arm"
+#elif defined(__wasm64__)
+    #define ARCH_STRING "wasm64"
+#elif defined(__wasm32__)
+    #define ARCH_STRING "wasm32"
+#elif defined(__riscv)
+    #define ARCH_STRING "riscv"
+#else
+    #define ARCH_STRING "unknown"
+#endif
 
 
 int main(int argc, const char* argv[]) {
     printf("A small example to show structure packing across platforms\n");
-    showStructure(&TFieldDescriptor_meta);
+    printf("Platform: %s\n", ARCH_STRING);
+    /*showStructure(&TFieldDescriptor_meta);
     showStructure(&example_data_structure_meta);
-    showStructure(&example_data_structure_padded_pointer_meta);
+    showStructure(&example_data_structure_padded_pointer_meta);*/
+    //showStructure(&TBasicDataTypes_meta);
+    showStructure(&T8and64BitataTypes_meta);
     return 0;
 }
 
