@@ -1,8 +1,7 @@
 #pragma once
 #include <stdint.h>
 
-typedef union TPointerUnion
-{
+typedef union TPointerUnion {
     void* pointer;
     uint64_t asUint64;
 }TPointerUnion;
@@ -14,6 +13,14 @@ typedef struct TAllDataTypes{
     uint8_t eightAgain;
     void* pointer;
 } TAllDataTypes;
+
+typedef struct TAllDataTypesWithUnion{
+    uint8_t eight;
+    uint16_t sixteen;
+    uint32_t thirtytwo;
+    uint8_t eightAgain;
+    TPointerUnion pointer;
+} TAllDataTypesWithUnion;
 
 typedef struct example_data_structure_padded_pointer
 {
