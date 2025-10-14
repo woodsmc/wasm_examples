@@ -39,6 +39,11 @@ Note: I refer the reader the following blog posts:
     } name
 
 #define SET_NULL(A) (A).wasm.ptr = NULL; (A).host.ptr = NULL
+#define IS_COMPLETELY_NULL(A) ((A).wasm.ptr == NULL && (A).host.ptr == NULL)
+#define IS_HOST_NULL(A) ((A).host.ptr == NULL)
+#define IS_WASM_NULL(A) ((A).wasm.ptr == NULL)
+#define XPTR_GET_WASM_ADDR(A) ((A).wasm.u64)
+
 #define SET_XPTR(A, P) (A).wasm.ptr = (P).wasm.ptr; (A).host.ptr = (P).host.ptr
 #define PRINT_XPTR(A) printf("XPTR: wasm.ptr=%p host.ptr=%p\n", (void*)(A).wasm.ptr, (void*)(A).host.ptr)
 
