@@ -39,6 +39,8 @@ Note: I refer the reader the following blog posts:
     } name
 
 #define SET_NULL(A) (A).wasm.ptr = NULL; (A).host.ptr = NULL
+#define SET_XPTR(A, P) (A).wasm.ptr = (P).wasm.ptr; (A).host.ptr = (P).host.ptr
+#define PRINT_XPTR(A) printf("XPTR: wasm.ptr=%p host.ptr=%p\n", (void*)(A).wasm.ptr, (void*)(A).host.ptr)
 
 #ifdef __wasm__
 #define XPTR(A) ((A).wasm.ptr)
@@ -46,7 +48,7 @@ Note: I refer the reader the following blog posts:
 #define XPTR(A) ((A).host.ptr)
 #endif // __wasm__
 
-CREATE_CACHED_XPLATFORM(uint32_t, xuint32Ptr);
+
 
 
 
