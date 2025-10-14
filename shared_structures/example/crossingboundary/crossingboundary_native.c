@@ -8,6 +8,8 @@ void printList(wasm_exec_env_t exec_env, XTLinkedListNodePtr* head) {
     printf("Printing list:\n");
     XTLinkedListNodePtr current = {0};
     SET_XPTR(current, *head);
+    PRINT_XPTR(current);
+    
     while (XPTR(current) != NULL) {
         printf("Node value: %u\n", XPTR(current)->value);
         SET_XPTR(current, XPTR(current)->next);

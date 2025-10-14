@@ -39,7 +39,7 @@ int main(void) {
     printf("Calling printList in the native code\n");
     printList(&head);
     printf("Returned from printList in the native code\n");
-    
+
     // Free the list
     XTLinkedListNodePtr current = head;
     while (XPTR(current) != NULL) {
