@@ -37,7 +37,9 @@ int main(void) {
     }
 
     printf("Calling printList in the native code\n");
+    fflush(stdout);
     printList(&head);
+    fflush(stdout);
     printf("Returned from printList in the native code\n");
 
     // Free the list

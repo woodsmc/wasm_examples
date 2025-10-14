@@ -5,7 +5,8 @@
 
 
 void printList(wasm_exec_env_t exec_env, XTLinkedListNodePtr* head) {
-    printf("Printing list:\n");
+    printf("Native -- Printing list:\n");
+    fflush(stdout);
     XTLinkedListNodePtr current = {0};
     SET_XPTR(current, *head);
     PRINT_XPTR(current);
@@ -26,6 +27,7 @@ static NativeSymbol native_symbols[] = {
 uint32_t
 get_native_lib(char **p_module_name, NativeSymbol **p_native_symbols)
 {
+  printf("%s\n", __func__);
     *p_module_name = "example";
     *p_native_symbols = native_symbols;
     return sizeof(native_symbols) / sizeof(NativeSymbol);
