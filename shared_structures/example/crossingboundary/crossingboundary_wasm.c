@@ -15,7 +15,7 @@ XTLinkedListNodePtr addToList(XTLinkedListNodePtr head, uint32_t value) {
     }
    
     XPTR(newNode)->value = value;
-    SET_NULL(XPTR(newNode)->next);
+    XPTR_SET_NULL(XPTR(newNode)->next);
 
     if (XPTR(head) == NULL) {
         printf("The list was empty, this node is the first node %u\n", value);
@@ -23,7 +23,7 @@ XTLinkedListNodePtr addToList(XTLinkedListNodePtr head, uint32_t value) {
     }
 
     printf("Adding node with value %u to the front of the list\n", value);
-    SET_XPTR(XPTR(newNode)->next, head);
+    XPTR_SET(XPTR(newNode)->next, head);
     printf("newNode->next is %p\n", (void*)XPTR(XPTR(newNode)->next));
 
     return newNode;

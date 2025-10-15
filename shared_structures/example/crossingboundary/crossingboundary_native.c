@@ -6,14 +6,11 @@
 void update_native_addresses(wasm_module_inst_t module_inst, XTLinkedListNodePtr* head) {
     // In a real application, you would have a way to map the wasm pointers to native pointers.
     // For this example, we will assume that the wasm pointers are valid native pointers.
-    XTLinkedListNodePtr current = {0};
-    SET_XPTR(current, *head);
+    XTLinkedListNodePtr* current = head;
     
-    while (!IS_COMPLETELY_NULL(current)) {
-        if (IS_HOST_NULL(current)) {
-            current.host.ptr = wasm_runtime_addr_app_to_native(module_inst, XPTR_GET_WASM_ADDR(current) );
-        }
-        SET_XPTR(current, XPTR(current)->next);
+    while (!XPTR_IS_COMPLETELY_NULL(*current)) {
+        XPTR_RESOLVE_HOST(module_inst, *current);
+       current = &XPTR(*current)->next;
     }
 }
 
@@ -25,12 +22,12 @@ void printList(wasm_exec_env_t exec_env, XTLinkedListNodePtr* head) {
 
     fflush(stdout);
     XTLinkedListNodePtr current = {0};
-    SET_XPTR(current, *head);
-    PRINT_XPTR(current);
+    XPTR_SET(current, *head);
+    XPTR_PRINT(current);
     
     while (XPTR(current) != NULL) {
         printf("Node value: %u\n", XPTR(current)->value);
-        SET_XPTR(current, XPTR(current)->next);
+        XPTR_SET(current, XPTR(current)->next);
     }
 
     fflush(stdout);

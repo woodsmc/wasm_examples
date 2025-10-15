@@ -38,19 +38,20 @@ Note: I refer the reader the following blog posts:
         CONCAT(payload_type, MONIKER) host;\
     } name
 
-#define SET_NULL(A) (A).wasm.ptr = NULL; (A).host.ptr = NULL
-#define IS_COMPLETELY_NULL(A) ((A).wasm.ptr == NULL && (A).host.ptr == NULL)
-#define IS_HOST_NULL(A) ((A).host.ptr == NULL)
-#define IS_WASM_NULL(A) ((A).wasm.ptr == NULL)
+#define XPTR_SET_NULL(A) (A).wasm.ptr = NULL; (A).host.ptr = NULL
+#define XPTR_IS_COMPLETELY_NULL(A) ((A).wasm.ptr == NULL && (A).host.ptr == NULL)
+#define XPTR_IS_HOST_NULL(A) ((A).host.ptr == NULL)
+#define XPTR_IS_WASM_NULL(A) ((A).wasm.ptr == NULL)
 #define XPTR_GET_WASM_ADDR(A) ((A).wasm.u64)
 
-#define SET_XPTR(A, P) (A).wasm.ptr = (P).wasm.ptr; (A).host.ptr = (P).host.ptr
-#define PRINT_XPTR(A) printf("XPTR: wasm.ptr=%p host.ptr=%p\n", (void*)(A).wasm.ptr, (void*)(A).host.ptr)
+#define XPTR_SET(A, P) (A).wasm.ptr = (P).wasm.ptr; (A).host.ptr = (P).host.ptr
+#define XPTR_PRINT(A) printf("XPTR: wasm.ptr=%p host.ptr=%p\n", (void*)(A).wasm.ptr, (void*)(A).host.ptr)
 
 #ifdef __wasm__
 #define XPTR(A) ((A).wasm.ptr)
 #else // ! __wasm__
 #define XPTR(A) ((A).host.ptr)
+#define XPTR_RESOLVE_HOST(module_inst, A) if( (A).wasm.ptr && !(A).host.ptr ) { (A).host.ptr = wasm_runtime_addr_app_to_native( (module_inst), (A).wasm.u64); }
 #endif // __wasm__
 
 
