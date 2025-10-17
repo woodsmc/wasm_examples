@@ -21,13 +21,12 @@ void printList(wasm_exec_env_t exec_env, XTLinkedListNodePtr* head) {
     update_native_addresses(module, head);
 
     fflush(stdout);
-    XTLinkedListNodePtr current = {0};
-    XPTR_SET(current, *head);
-    XPTR_PRINT(current);
+    XTLinkedListNodePtr* current = head;
+    XPTR_PRINT(*current);
     
-    while (XPTR(current) != NULL) {
-        printf("Node value: %u\n", XPTR(current)->value);
-        XPTR_SET(current, XPTR(current)->next);
+    while (XPTR(*current) != NULL) {
+        printf("Node value: %u\n", XPTR(*current)->value);
+        current = &XPTR(*current)->next;
     }
 
     fflush(stdout);
