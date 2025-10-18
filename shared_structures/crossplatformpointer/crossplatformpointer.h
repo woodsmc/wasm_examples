@@ -13,14 +13,13 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
+// crossplatformpointer.h
 #pragma once
 #include <stdint.h>
 
 /*
 Note: I refer the reader the following blog posts:
 - https://iafisher.com/blog/2020/06/type-safe-generics-in-c
-- https://withbighair.com
 */
 
 #define CONCAT(A, B) A##B

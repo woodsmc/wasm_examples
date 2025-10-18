@@ -50,7 +50,7 @@ int main(int argc, const char* argv[]) {
 
     uint32_t val = 42;
     xuint32Ptr u32pr;
-    SET_NULL(u32pr);
+    XPTR_SET_NULL(u32pr);
     XPTR(u32pr) = NULL;
     printf("A small example to show cross platform pointers\n");
     XPTR(u32pr) = &val;
