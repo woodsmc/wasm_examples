@@ -48,8 +48,10 @@ Note: I refer the reader the following blog posts:
 
 #ifdef __wasm__
 #define XPTR(A) ((A).wasm.ptr)
+#define _XPTR wasm.ptr
 #else // ! __wasm__
 #define XPTR(A) ((A).host.ptr)
+#define _XPTR host.ptr
 #define XPTR_RESOLVE_HOST(module_inst, A) if( (A).wasm.ptr && !(A).host.ptr ) { (A).host.ptr = wasm_runtime_addr_app_to_native( (module_inst), (A).wasm.u64); }
 #endif // __wasm__
 
